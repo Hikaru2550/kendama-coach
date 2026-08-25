@@ -6,7 +6,6 @@ interface MoshikameProps {
 
 export default function Moshikame({ onBack }: MoshikameProps) {
   const [count, setCount] = useState<number>(0);
-  const [highScore, setHighScore] = useState<number>(0);
   const [isMetroPlaying, setIsMetroPlaying] = useState<boolean>(false);
   const [bpm, setBpm] = useState<number>(135); 
   const [beat, setBeat] = useState<number>(0); 
@@ -18,9 +17,7 @@ export default function Moshikame({ onBack }: MoshikameProps) {
   const currentBeatRef = useRef<number>(0);
 
   const handleCountUp = () => {
-    const newCount = count + 1;
-    setCount(newCount);
-    if (newCount > highScore) setCount(newCount);
+    setCount(count + 1);
   };
 
   const playClick = (time: number, isFirstBeat: boolean) => {
@@ -81,7 +78,6 @@ export default function Moshikame({ onBack }: MoshikameProps) {
       <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "10px", height: "calc(100% - 41px)", overflow: "hidden" }}>
         <div onClick={handleCountUp} style={{ background: isFlash ? "#f1f5f9" : "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", cursor: "pointer", userSelect: "none" }}>
           <span style={{ fontSize: "9px", color: "#94a3b8", fontWeight: "bold", letterSpacing: "3px", marginBottom: "8px", fontFamily: "monospace" }}>&gt;_ COUNTER_DATAVIEW</span>
-          {/* 🔥 タイム競技と完全に統一したIT硬派フォント */}
           <div style={{ fontSize: "115px", fontWeight: "400", fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace", fontVariantNumeric: "tabular-nums", color: "#0f172a", letterSpacing: "1px", lineHeight: "1.0", textAlign: "center", width: "100%", whiteSpace: "nowrap" }}>
             {count}
           </div>
@@ -110,11 +106,6 @@ export default function Moshikame({ onBack }: MoshikameProps) {
                 <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: beat === 4 ? "#64748b" : "#e2e8f0" }} />
               </div>
             </div>
-          </div>
-
-          <div style={{ background: "#ffffff", padding: "10px 14px", borderRadius: "8px", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "bold", fontFamily: "monospace" }}>BEST_RECORD:</span>
-            <span style={{ fontSize: "24px", fontWeight: "bold", color: "#0f172a", fontFamily: "monospace" }}>{highScore}</span>
           </div>
 
           <div style={{ display: "flex", gap: "8px" }}>
