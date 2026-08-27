@@ -24,7 +24,6 @@ export default function Competition({ onBack }: CompetitionProps) {
     const trick1P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class1P]?.[selectedNumber - 1] || "---") : "番号を選択";
     const trick2P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class2P]?.[selectedNumber - 1] || "---") : "番号を選択";
 
-    // 各番号ボタンを描画する共通の部品
     const btn = (num: number) => (
       <button 
         onClick={() => setSelectedNumber(num)} 
@@ -63,7 +62,6 @@ export default function Competition({ onBack }: CompetitionProps) {
             </div>
           </div>
 
-          {/* 🛠️ バグの起きるループを完全に廃止し、1〜10番のボタンを手動で完璧に並べました */}
           <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
             <div style={{ display: "flex", gap: "4px", height: "35px" }}>
               {btn(1)} {btn(2)} {btn(3)} {btn(4)} {btn(5)}
@@ -74,20 +72,27 @@ export default function Competition({ onBack }: CompetitionProps) {
           </div>
         </div>
 
+        {/* 【表示エリア】文字が2行になっても枠内で綺麗に中央揃えになるよう調整 */}
         <div style={{ flex: 1, display: "grid", gridTemplateRows: "1fr 1fr", gap: "6px", overflow: "hidden" }}>
-          <div style={{ background: "#f8fafc", borderLeft: "6px solid #ff4b4b", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0", borderRadius: "8px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px", boxSizing: "border-box" }}>
-            <span style={{ fontSize: "11px", color: "#ff4b4b", fontWeight: "bold", fontFamily: "monospace" }}>&gt;_ PLAYER_1 ({class1P})</span>
-            <div style={{ fontSize: selectedNumber > 0 ? "34px" : "16px", fontWeight: "bold", fontFamily: "'SFMono-Regular', Consolas, monospace", color: "#0f172a", textAlign: "center", marginTop: "8px", width: "100%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          
+          {/* 上側：1人目の結果表示 */}
+          <div style={{ background: "#f8fafc", borderLeft: "6px solid #ff4b4b", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0", borderRadius: "8px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "16px", boxSizing: "border-box" }}>
+            <span style={{ fontSize: "11px", color: "#ff4b4b", fontWeight: "bold", fontFamily: "monospace", marginBottom: "4px" }}>&gt;_ PLAYER_1 ({class1P})</span>
+            {/* 🛠️ [改善点] 24pxにサイズ調整、whiteSpaceを「normal」にして2行の自動改行を許可 */}
+            <div style={{ fontSize: "24px", fontWeight: "700", fontFamily: "'SFMono-Regular', Consolas, monospace", color: "#0f172a", textAlign: "center", width: "100%", whiteSpace: "normal", wordBreak: "break-word", lineHeight: "1.3" }}>
               {trick1P}
             </div>
           </div>
 
-          <div style={{ background: "#f8fafc", borderLeft: "6px solid #1e88e5", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0", borderRadius: "8px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px", boxSizing: "border-box" }}>
-            <span style={{ fontSize: "11px", color: "#1e88e5", fontWeight: "bold", fontFamily: "monospace" }}>&gt;_ PLAYER_2 ({class2P})</span>
-            <div style={{ fontSize: selectedNumber > 0 ? "34px" : "16px", fontWeight: "bold", fontFamily: "'SFMono-Regular', Consolas, monospace", color: "#0f172a", textAlign: "center", marginTop: "8px", width: "100%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          {/* 下側：2人目の結果表示 */}
+          <div style={{ background: "#f8fafc", borderLeft: "6px solid #1e88e5", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0", borderRadius: "8px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "16px", boxSizing: "border-box" }}>
+            <span style={{ fontSize: "11px", color: "#1e88e5", fontWeight: "bold", fontFamily: "monospace", marginBottom: "4px" }}>&gt;_ PLAYER_2 ({class2P})</span>
+            {/* 🛠️ [改善点] 上記と同様に文字切れを徹底ガード */}
+            <div style={{ fontSize: "24px", fontWeight: "700", fontFamily: "'SFMono-Regular', Consolas, monospace", color: "#0f172a", textAlign: "center", width: "100%", whiteSpace: "normal", wordBreak: "break-word", lineHeight: "1.3" }}>
               {trick2P}
             </div>
           </div>
+
         </div>
       </div>
     );
