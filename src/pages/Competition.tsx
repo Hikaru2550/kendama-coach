@@ -9,7 +9,7 @@ const TOURNAMENT_TRICKS: Record<string, string[]> = {
   "三段以上": ["さか落とし", "宇宙一周", "うぐいす", "はねけん", "一回転飛行機", "一回転灯台", "すべり止め極意", "うぐいす渡り", "ちどり", "つるし"]
 };
 
-const CLASS_LIST = ["10級~6級", "5級~1級", "初段", "二段", "三段以上"];
+const CLASS_LIST = ["10級~6級", "5級~1級", "初段、二段", "三段、四段", "五段以上"];
 
 interface CompetitionProps {
   onBack: () => void;
