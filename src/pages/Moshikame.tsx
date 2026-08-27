@@ -17,12 +17,14 @@ export default function Moshikame({ onBack }: MoshikameProps) {
   const nextNoteTimeRef = useRef<number>(0);
   const currentBeatRef = useRef<number>(0);
 
+  // カウントアップ処理
   const handleCountUp = () => {
     const newCount = count + 1;
     setCount(newCount);
     if (newCount > highScore) setCount(newCount);
   };
 
+  // 電子メトロノーム音の生成
   const playClick = (time: number, isFirstBeat: boolean) => {
     if (!audioCtxRef.current) return;
     const osc = audioCtxRef.current.createOscillator();
@@ -36,6 +38,7 @@ export default function Moshikame({ onBack }: MoshikameProps) {
     osc.stop(time + 0.08);
   };
 
+  // メトロノームの高精度スケジューラー
   useEffect(() => {
     if (!isMetroPlaying) {
       if (metroTimerRef.current) window.clearInterval(metroTimerRef.current);
@@ -77,7 +80,7 @@ export default function Moshikame({ onBack }: MoshikameProps) {
       color: "#0f172a", overflow: "hidden", boxSizing: "border-box", padding: "6px", 
       fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" 
     }}>
-      {/* ヘッダー */}
+      {/* ヘッダーエリア */}
       <header style={{ display: "flex", alignItems: "center", height: "35px", borderBottom: "1px solid #e2e8f0", marginBottom: "6px" }}>
         <button onClick={onBack} style={{ margin: 0, padding: "4px 12px", fontSize: "12px", fontWeight: "bold", background: "#ffffff", color: "#0f172a", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer" }}>
           ⬅ メニューへ戻る
@@ -87,13 +90,13 @@ export default function Moshikame({ onBack }: MoshikameProps) {
         </span>
       </header>
 
-      {/* メインレイアウト */}
+      {/* メインレイアウト（上下にきれいに分割） */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px", height: "calc(100% - 41px)", overflow: "hidden" }}>
         
-        {/* 上半分：データ表示 ＆ メトロノーム（左右に分割） */}
+        {/* 【上半分：高さ40%】データ表示 ＆ メトロノームを横並びに配置 */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "6px", height: "40%", minHeight: "150px", boxSizing: "border-box" }}>
           
-          {/* 左上：最高記録 と リカバリーボタン */}
+          {/* 左上：最高記録表示 と リカバリーボタン */}
           <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
             <div style={{ background: "#ffffff", padding: "8px", borderRadius: "6px", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ fontSize: "11px", color: "#64748b", fontWeight: "bold", fontFamily: "monospace" }}>BEST:</span>
@@ -106,7 +109,7 @@ export default function Moshikame({ onBack }: MoshikameProps) {
             </div>
           </div>
 
-          {/* 右上：メトロノーム機能（エラーを引き起こす不完全なループを完全排除） */}
+          {/* 🌟【右上】メトロノーム機能（ご要望通り右上の特等席にすっきり集約！） */}
           <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span style={{ fontSize: "11px", fontWeight: "bold", fontFamily: "monospace" }}>BPM: {bpm}</span>
@@ -122,19 +125,19 @@ export default function Moshikame({ onBack }: MoshikameProps) {
               <button onClick={(e) => { e.stopPropagation(); setIsMetroPlaying(!isMetroPlaying); }} style={{ flex: 1, height: "34px", background: isMetroPlaying ? "#0f172a" : "#e2e8f0", color: isMetroPlaying ? "#ffffff" : "#0f172a", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold", fontFamily: "monospace", fontSize: "11px" }}>
                 {isMetroPlaying ? "STOP" : "START"}
               </button>
-              {/* 4拍子ライト */}
+              {/* 4拍子ライト（手動で1つずつ並べてエラーを完全回避！） */}
               <div style={{ display: "flex", gap: "3px" }}>
-                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 1 ? "#0f172a" : "#e2e8f0" }} />
-                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 2 ? "#64748b" : "#e2e8f0" }} />
-                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 3 ? "#64748b" : "#e2e8f0" }} />
-                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 4 ? "#64748b" : "#e2e8f0" }} />
+                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 1 ? "#0f172a" : "#e2e8f0", transition: "background 0.05s" }} />
+                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 2 ? "#64748b" : "#e2e8f0", transition: "background 0.05s" }} />
+                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 3 ? "#64748b" : "#e2e8f0", transition: "background 0.05s" }} />
+                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 4 ? "#64748b" : "#e2e8f0", transition: "background 0.05s" }} />
               </div>
             </div>
           </div>
 
         </div>
 
-        {/* 下半分：超巨大カウントタップエリア */}
+        {/* 🌟【下半分：残りすべての高さ】超巨大カウントタップエリア（ご要望通りの数える機能！） */}
         <div 
           onClick={handleCountUp}
           style={{ 
@@ -152,6 +155,7 @@ export default function Moshikame({ onBack }: MoshikameProps) {
         >
           <span style={{ fontSize: "9px", color: "#94a3b8", fontWeight: "bold", letterSpacing: "3px", marginBottom: "4px", fontFamily: "monospace" }}>&gt;_ COUNTER_DATAVIEW</span>
           
+          {/* タイム競技と完全に統一した、美しくて大きなIT等幅数字表示 */}
           <div style={{ 
             fontSize: "120px", fontWeight: "400", 
             fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace", 
