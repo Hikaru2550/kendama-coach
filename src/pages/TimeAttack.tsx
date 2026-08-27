@@ -68,7 +68,7 @@ export default function TimeAttack({ onBack }: TimeAttackProps) {
             borderRadius: "4px", cursor: "pointer", transition: "all 0.1s"
           }}
         >
-          ⬅ メメニューへ戻る
+          ⬅ メニューへ戻る
         </button>
         <span style={{ marginLeft: "15px", fontSize: "10px", fontWeight: "700", letterSpacing: "2px", color: "#94a3b8", fontFamily: "monospace" }}>
           SYS.LOC // TIME_VERTICAL_V3.0
