@@ -55,7 +55,7 @@ export default function TimeAttack({ onBack }: TimeAttackProps) {
       color: "#0f172a", overflow: "hidden", boxSizing: "border-box", padding: "6px",
       fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif"
     }}>
-      {/* ITインジケーター風ヘッダー */}
+      {/* 上部ヘッダー */}
       <header style={{ 
         display: "flex", alignItems: "center", height: "35px", 
         borderBottom: "1px solid #e2e8f0", marginBottom: "6px" 
@@ -63,111 +63,100 @@ export default function TimeAttack({ onBack }: TimeAttackProps) {
         <button 
           onClick={onBack} 
           style={{ 
-            margin: 0, padding: "4px 12px", fontSize: "11px", fontWeight: "bold",
+            margin: 0, padding: "4px 12px", fontSize: "12px", fontWeight: "bold",
             background: "#ffffff", color: "#0f172a", border: "1px solid #cbd5e1", 
-            borderRadius: "4px", cursor: "pointer", transition: "all 0.1s",
-            letterSpacing: "1px", fontFamily: "monospace"
+            borderRadius: "4px", cursor: "pointer", transition: "all 0.1s"
           }}
-          onMouseOver={(e) => e.currentTarget.style.background = "#f1f5f9"}
-          onMouseOut={(e) => e.currentTarget.style.background = "#ffffff"}
         >
-          ⬅ メニューへ戻る
+          ⬅ メメニューへ戻る
         </button>
         <span style={{ marginLeft: "15px", fontSize: "10px", fontWeight: "700", letterSpacing: "2px", color: "#94a3b8", fontFamily: "monospace" }}>
-          
+          SYS.LOC // TIME_VERTICAL_V3.0
         </span>
       </header>
 
-      {/* メインレイアウト */}
-      <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "10px", height: "calc(100% - 41px)", overflow: "hidden" }}>
+      {/* メインレイアウト（スマホの縦画面用に上下分割構造へアップデート） */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px", height: "calc(100% - 41px)", overflow: "hidden" }}>
         
-        {/* 左側：メインストップウォッチ（上下左右の完全中央寄せに構造をアップデート） */}
+        {/* 上側：ストップウォッチメインパネル（全体の高さを固定して重なりを完全防止） */}
         <div style={{ 
           background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", 
-          padding: "16px", display: "flex", flexDirection: "column", 
-          alignItems: "center", justifyContent: "center", // コンテンツを完全に真ん中（センター）に集約
-          boxSizing: "border-box", height: "100%"
+          padding: "16px 12px", display: "flex", flexDirection: "column", 
+          alignItems: "center", justifyContent: "center", boxSizing: "border-box",
+          height: "45%" // 画面の上45%をストップウォッチエリアに固定
         }}>
-          {/* 中央のコンテナ：数字とボタンを近くに配置して塊（カタマリ）にする */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
-            
-            {/* ラベル */}
-            <span style={{ fontSize: "9px", color: "#94a3b8", fontWeight: "bold", letterSpacing: "3px", marginBottom: "8px", fontFamily: "monospace" }}>
-              &gt;
-            </span>
-            
-            {/* IT硬派フォント表示（不要な余白を完全に削ったタイト設計） */}
-            <div style={{ 
-              fontSize: "105px", 
-              fontWeight: "400", 
-              fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace", 
-              fontVariantNumeric: "tabular-nums", 
-              color: "#0f172a", 
-              letterSpacing: "1px", 
-              textAlign: "center",
-              width: "100%",
-              whiteSpace: "nowrap",
-              lineHeight: "0.95" // 縦のラインをキュッと引き締める
-            }}>
-              {formatTime(time)}
-            </div>
+          <span style={{ fontSize: "9px", color: "#94a3b8", fontWeight: "bold", letterSpacing: "3px", marginBottom: "4px", fontFamily: "monospace" }}>
+            &gt;_ RUNNING_DATETIME
+          </span>
+          
+          {/* 縦画面の幅にバシッと収まる、最大級かつ洗練された等幅ITフォント（はみ出し・上下切れ対策済み） */}
+          <div style={{ 
+            fontSize: "76px", 
+            fontWeight: "400", 
+            fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace", 
+            fontVariantNumeric: "tabular-nums", 
+            color: "#0f172a", 
+            letterSpacing: "1px", 
+            textAlign: "center",
+            width: "100%",
+            whiteSpace: "nowrap",
+            lineHeight: "1.1",
+            margin: "4px 0"
+          }}>
+            {formatTime(time)}
+          </div>
 
-            {/* ボタンエリア（数字のすぐ下に最適な距離感で結合） */}
-            <div style={{ 
-              display: "flex", gap: "12px", width: "100%", maxWidth: "340px", 
-              marginTop: "24px" // 数字との間隔を美しく保つ
-            }}>
-              <button 
-                onClick={handleStartStop} 
-                style={{
-                  flex: 1, height: "46px", borderRadius: "6px", border: "none", fontSize: "14px", fontWeight: "700", cursor: "pointer",
-                  background: "#0f172a",
-                  color: "#ffffff",
-                  boxShadow: isRunning ? "0 4px 12px rgba(15,23,42,0.15)" : "none",
-                  transition: "all 0.1s",
-                  letterSpacing: "1.5px",
-                  fontFamily: "monospace"
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.background = "#1e293b" }}
-                onMouseOut={(e) => { e.currentTarget.style.background = "#0f172a" }}
-              >
-                {isRunning ? "STOP" : "START"}
-              </button>
-              
-              <button 
-                onClick={isRunning ? handleLap : handleReset} 
-                style={{
-                  width: "100px", height: "46px", borderRadius: "6px", 
-                  border: "1px solid #cbd5e1", fontSize: "13px", fontWeight: "700", cursor: "pointer",
-                  background: "#ffffff",
-                  color: "#0f172a",
-                  transition: "all 0.1s",
-                  letterSpacing: "1.5px",
-                  fontFamily: "monospace"
-                }}
-                onMouseOver={(e) => e.currentTarget.style.background = "#f1f5f9"}
-                onMouseOut={(e) => e.currentTarget.style.background = "#ffffff"}
-              >
-                {isRunning ? "LAP" : "RESET"}
-              </button>
-            </div>
-
+          {/* スマホ縦持ち時に、親指が最も押しやすい位置に引き上げたコントロールボタン */}
+          <div style={{ 
+            display: "flex", gap: "10px", width: "100%", maxWidth: "340px", 
+            marginTop: "12px"
+          }}>
+            <button 
+              onClick={handleStartStop} 
+              style={{
+                flex: 1, height: "46px", borderRadius: "6px", border: "none", fontSize: "14px", fontWeight: "700", cursor: "pointer",
+                background: "#0f172a",
+                color: "#ffffff",
+                boxShadow: isRunning ? "0 4px 12px rgba(15,23,42,0.15)" : "none",
+                transition: "all 0.1s",
+                letterSpacing: "1.5px",
+                fontFamily: "monospace"
+              }}
+            >
+              {isRunning ? "EXEC_STOP" : "EXEC_START"}
+            </button>
+            
+            <button 
+              onClick={isRunning ? handleLap : handleReset} 
+              style={{
+                width: "100px", height: "46px", borderRadius: "6px", 
+                border: "1px solid #cbd5e1", fontSize: "13px", fontWeight: "700", cursor: "pointer",
+                background: "#ffffff",
+                color: "#0f172a",
+                transition: "all 0.1s",
+                letterSpacing: "1.5px",
+                fontFamily: "monospace"
+              }}
+            >
+              {isRunning ? "LAP" : "RESET"}
+            </button>
           </div>
         </div>
 
-        {/* 右側：ラップタイムログリスト */}
+        {/* 下側：ラップタイムログリスト（残りの高さを使ってスクロール表示） */}
         <div style={{ 
           background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", 
-          padding: "16px", display: "flex", flexDirection: "column", overflow: "hidden" 
+          padding: "12px 14px", display: "flex", flexDirection: "column", 
+          height: "55%", overflow: "hidden", boxSizing: "border-box"
         }}>
           <h3 style={{ 
-            margin: "0 0 12px 0", fontSize: "10px", fontWeight: "700", letterSpacing: "2px",
-            borderBottom: "1px solid #e2e8f0", paddingBottom: "8px", color: "#94a3b8", fontFamily: "monospace"
+            margin: "0 0 8px 0", fontSize: "10px", fontWeight: "700", letterSpacing: "2px",
+            borderBottom: "1px solid #e2e8f0", paddingBottom: "6px", color: "#94a3b8", fontFamily: "monospace"
           }}>
             LOG_BUFFER ({laps.length})
           </h3>
           
-          {/* ラップログ */}
+          {/* ラップログ（最新が一番上に来るように表示され、文字切れ・上下切れなし） */}
           <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column-reverse", gap: "6px" }}>
             {laps.length === 0 ? (
               <div style={{ margin: "auto", color: "#94a3b8", fontSize: "11px", letterSpacing: "1px", fontFamily: "monospace" }}>
@@ -179,8 +168,8 @@ export default function TimeAttack({ onBack }: TimeAttackProps) {
                   key={index} 
                   style={{
                     display: "flex", justifyContent: "space-between", alignItems: "center", 
-                    padding: "12px 16px", background: "#ffffff", borderRadius: "6px", 
-                    border: "1px solid #e2e8f0"
+                    padding: "10px 14px", background: "#ffffff", borderRadius: "6px", 
+                    border: "1px solid #e2e8f0", boxShadow: "0 1px 3px rgba(0,0,0,0.02)"
                   }}
                 >
                   <strong style={{ fontSize: "11px", color: "#64748b", fontFamily: "monospace" }}>
@@ -189,10 +178,11 @@ export default function TimeAttack({ onBack }: TimeAttackProps) {
                   <span style={{ 
                     fontFamily: "'SFMono-Regular', Consolas, monospace", 
                     fontVariantNumeric: "tabular-nums",
-                    fontSize: "22px", 
+                    fontSize: "20px", 
                     fontWeight: "bold", 
                     color: "#0f172a",
-                    letterSpacing: "0.5px"
+                    letterSpacing: "0.5px",
+                    lineHeight: "1.2"
                   }}>
                     {formatTime(lapTime)}
                   </span>
