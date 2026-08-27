@@ -87,10 +87,10 @@ export default function Moshikame({ onBack }: MoshikameProps) {
         </span>
       </header>
 
-      {/* メインレイアウト（スマホの縦画面用に綺麗に上下でエリアを分離） */}
+      {/* メインレイアウト */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px", height: "calc(100% - 41px)", overflow: "hidden" }}>
         
-        {/* 【上半分】データ表示 ＆ メトロノーム（左右に分割して配置をスッキリ） */}
+        {/* 上半分：データ表示 ＆ メトロノーム（左右に分割） */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "6px", height: "40%", minHeight: "150px", boxSizing: "border-box" }}>
           
           {/* 左上：最高記録 と リカバリーボタン */}
@@ -101,12 +101,12 @@ export default function Moshikame({ onBack }: MoshikameProps) {
             </div>
             
             <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-              <button onClick={(e) => { e.stopPropagation(); if (count > 0) setCount(count - 1); }} disabled={count === 0} style={{ width: "100%", height: "32px", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontFamily: "monospace", fontSize: "11px" }}>[ -1 ]</button>
+              <button onClick={(e) => { e.stopPropagation(); if (count > 0) setCount(count - 1); }} disabled={count === 0} style={{ width: "100%", height: "32px", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: count === 0 ? "not-allowed" : "pointer", fontFamily: "monospace", fontSize: "11px" }}>[ -1 ]</button>
               <button onClick={(e) => { e.stopPropagation(); if (window.confirm("リセットしますか？")) setCount(0); }} style={{ width: "100%", height: "32px", background: "#ef4444", color: "white", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontFamily: "monospace", fontSize: "11px" }}>RESET</button>
             </div>
           </div>
 
-          {/* 🔥【右上】メトロノーム機能（ご要望通り右上の特等席に集約！） */}
+          {/* 右上：メトロノーム機能（エラーを引き起こす不完全なループを完全排除） */}
           <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span style={{ fontSize: "11px", fontWeight: "bold", fontFamily: "monospace" }}>BPM: {bpm}</span>
@@ -122,7 +122,7 @@ export default function Moshikame({ onBack }: MoshikameProps) {
               <button onClick={(e) => { e.stopPropagation(); setIsMetroPlaying(!isMetroPlaying); }} style={{ flex: 1, height: "34px", background: isMetroPlaying ? "#0f172a" : "#e2e8f0", color: isMetroPlaying ? "#ffffff" : "#0f172a", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold", fontFamily: "monospace", fontSize: "11px" }}>
                 {isMetroPlaying ? "STOP" : "START"}
               </button>
-              {/* 4拍子インジケーター */}
+              {/* 4拍子ライト */}
               <div style={{ display: "flex", gap: "3px" }}>
                 <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 1 ? "#0f172a" : "#e2e8f0" }} />
                 <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 2 ? "#64748b" : "#e2e8f0" }} />
@@ -134,11 +134,11 @@ export default function Moshikame({ onBack }: MoshikameProps) {
 
         </div>
 
-        {/* 🔥【下半分】超巨大カウントタップエリア（ご要望通り下半分すべてをカウントボタン化！） */}
+        {/* 下半分：超巨大カウントタップエリア */}
         <div 
           onClick={handleCountUp}
           style={{ 
-            flex: 1, // 残りの縦幅（約60%）をすべて使い切る
+            flex: 1, 
             background: isFlash ? "#f1f5f9" : "#f8fafc", 
             border: isFlash ? "1px solid #94a3b8" : "1px solid #e2e8f0", 
             borderRadius: "12px", display: "flex", flexDirection: "column", 
@@ -152,7 +152,6 @@ export default function Moshikame({ onBack }: MoshikameProps) {
         >
           <span style={{ fontSize: "9px", color: "#94a3b8", fontWeight: "bold", letterSpacing: "3px", marginBottom: "4px", fontFamily: "monospace" }}>&gt;_ COUNTER_DATAVIEW</span>
           
-          {/* 大迫力のIT等幅数字表示 */}
           <div style={{ 
             fontSize: "120px", fontWeight: "400", 
             fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace", 
