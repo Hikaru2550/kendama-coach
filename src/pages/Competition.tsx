@@ -9,7 +9,7 @@ const TOURNAMENT_TRICKS: Record<string, string[]> = {
   "三段以上": ["さか落とし", "宇宙一周", "うぐいす", "はねけん", "一回転飛行機", "一回転灯台", "すべり止め極意", "うぐいす渡り", "ちどり", "つるし"]
 };
 
-const CLASS_LIST = ["10級~6級", "5級~1級", "初段、二段", "三段、四段", "五段以上"];
+const CLASS_LIST = ["10級~6級", "5級~1級", "初段", "二段", "三段以上"];
 
 interface CompetitionProps {
   onBack: () => void;
@@ -47,10 +47,10 @@ export default function Competition({ onBack }: CompetitionProps) {
           </button>
         </header>
 
-        {/* コントロールエリア（スマホの縦画面でも見やすく2段に配置） */}
+        {/* コントロールエリア */}
         <div style={{ background: "#f8fafc", padding: "8px", borderRadius: "8px", border: "1px solid #e2e8f0", marginBottom: "6px", display: "flex", flexDirection: "column", gap: "8px" }}>
           {/* 上段：1人目と2人目の段位選択 */}
-          <div style={{ display: "flex", justifySelf: "center", gap: "8px" }}>
+          <div style={{ display: "flex", gap: "8px" }}>
             <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "4px", background: "#ffffff", padding: "4px 8px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
               <span style={{ fontSize: "11px", color: "#ff4b4b", fontWeight: "bold", whiteSpace: "nowrap" }}>🔴1人目:</span>
               <select value={class1P} onChange={(e) => setClass1P(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
