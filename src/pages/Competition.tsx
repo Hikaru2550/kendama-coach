@@ -21,7 +21,7 @@ export default function Competition({ onBack }: CompetitionProps) {
   const [class2P, setClass2P] = useState<string>("5級~1級");
   const [selectedNumber, setSelectedNumber] = useState<number>(0);
 
-  // ■■■ 1. ハンデ付き選技（押しやすさ・バランス重視レイアウト） ■■■
+  // ■■■ 1. ハンデ付き選技（スマホ縦画面・スクロール不要レイアウト） ■■■
   if (subPage === "handicap") {
     const trick1P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class1P]?.[selectedNumber - 1] || "---") : "番号を選択";
     const trick2P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class2P]?.[selectedNumber - 1] || "---") : "番号を選択";
@@ -33,138 +33,76 @@ export default function Competition({ onBack }: CompetitionProps) {
         maxHeight: "100svh",
         display: "flex", 
         flexDirection: "column", 
-        background: "#f4f6f8",
+        background: "#ffffff", 
+        color: "#0f172a", 
         overflow: "hidden", 
-        boxSizing: "border-box",
-        padding: "6px"
+        boxSizing: "border-box", 
+        padding: "6px",
+        fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif"
       }}>
-        {/* 上部エリア：ボタンサイズを大きくし、押しやすさを最優先に */}
-        <div style={{ 
-          background: "white", 
-          padding: "6px 12px", 
-          borderRadius: "8px", 
-          boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
-          marginBottom: "6px",
-          display: "flex",
-          alignItems: "center",
-          gap: "15px"
-        }}>
-          {/* 戻るボタン（押しやすいサイズ） */}
-          <button className="back-button" onClick={() => { setSubPage("menu"); setSelectedNumber(0); }} style={{ margin: 0, padding: "6px 12px", fontSize: "14px", whiteSpace: "nowrap" }}>
-            ⬅ メニュー
+        {/* ヘッダーエリア */}
+        <header style={{ display: "flex", alignItems: "center", height: "35px", borderBottom: "1px solid #e2e8f0", marginBottom: "4px" }}>
+          <button className="back-button" onClick={() => { setSubPage("menu"); setSelectedNumber(0); }} style={{ margin: 0, padding: "4px 12px", fontSize: "12px", fontWeight: "bold", background: "#ffffff", color: "#0f172a", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer" }}>
+            ⬅ メニューへ戻る
           </button>
+        </header>
 
-          {/* 1〜10の選技番号（押しやすいように幅と高さをしっかり確保） */}
-          <div style={{ display: "flex", alignItems: "center", gap: "5px", flex: 1, justifyContent: "center" }}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-              <button
-                key={num}
-                onClick={() => setSelectedNumber(num)}
-                style={{
-                  flex: "1",
-                  maxWidth: "45px",
-                  height: "38px",
-                  borderRadius: "6px",
-                  border: selectedNumber === num ? "2px solid #aa3bff" : "1px solid #bbb",
-                  background: selectedNumber === num ? "#aa3bff" : "white",
-                  color: selectedNumber === num ? "white" : "#222",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  fontSize: "16px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
-                }}
-              >
-                {num}
-              </button>
-            ))}
+        {/* コントロールエリア（スマホの縦画面でも見やすく2段に配置） */}
+        <div style={{ background: "#f8fafc", padding: "8px", borderRadius: "8px", border: "1px solid #e2e8f0", marginBottom: "6px", display: "flex", flexDirection: "column", gap: "8px" }}>
+          {/* 上段：1人目と2人目の段位選択 */}
+          <div style={{ display: "flex", justifySelf: "center", gap: "8px" }}>
+            <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "4px", background: "#ffffff", padding: "4px 8px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
+              <span style={{ fontSize: "11px", color: "#ff4b4b", fontWeight: "bold", whiteSpace: "nowrap" }}>🔴1人目:</span>
+              <select value={class1P} onChange={(e) => setClass1P(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
+                {CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "4px", background: "#ffffff", padding: "4px 8px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
+              <span style={{ fontSize: "11px", color: "#1e88e5", fontWeight: "bold", whiteSpace: "nowrap" }}>🔵2人目:</span>
+              <select value={class2P} onChange={(e) => setClass2P(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
+                {CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {/* 下段：選技番号ボタン（5個ずつ2列にしてスマホ縦画面でも押しやすく拡大） */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <div style={{ display: "flex", gap: "4px", height: "35px" }}>
+              {[1, 2, 3, 4, 5].map(num => (
+                <button key={num} onClick={() => setSelectedNumber(num)} style={{ flex: 1, borderRadius: "6px", border: selectedNumber === num ? "2px solid #aa3bff" : "1px solid #cbd5e1", background: selectedNumber === num ? "#aa3bff" : "white", color: selectedNumber === num ? "white" : "#0f172a", fontWeight: "bold", cursor: "pointer", fontSize: "14px" }}>{num}</button>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: "4px", height: "35px" }}>
+              {[6, 7, 8, 9, 10].map(num => (
+                <button key={num} onClick={() => setSelectedNumber(num)} style={{ flex: 1, borderRadius: "6px", border: selectedNumber === num ? "2px solid #aa3bff" : "1px solid #cbd5e1", background: selectedNumber === num ? "#aa3bff" : "white", color: selectedNumber === num ? "white" : "#0f172a", fontWeight: "bold", cursor: "pointer", fontSize: "14px" }}>{num}</button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* 【大画面表示エリア】段位設定をそれぞれの画面内に移動 */}
-        <div style={{ 
-          flex: 1, 
-          display: "grid", 
-          gridTemplateColumns: "1fr 1fr", 
-          gap: "6px",
-          height: "calc(100% - 56px)",
-          overflow: "hidden"
-        }}>
-          
-          {/* 左画面：1人目結果（赤） */}
-          <div style={{ 
-            background: "#fff", 
-            borderTop: "5px solid #ff4b4b", 
-            borderRadius: "8px", 
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-            boxSizing: "border-box",
-            padding: "8px"
-          }}>
-            {/* 段位選択を画面内に内包 */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #fee2e2", paddingBottom: "4px" }}>
-              <span style={{ fontSize: "14px", color: "#ff4b4b", fontWeight: "bold" }}>🔴 1人目の段位</span>
-              <select value={class1P} onChange={(e) => setClass1P(e.target.value)} style={{ padding: "4px 8px", borderRadius: "4px", fontSize: "13px", border: "1px solid #ccc" }}>
-                {CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-            {/* 技名表示（文字サイズを少し抑えてきれいに中央配置） */}
-            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-              <div style={{ 
-                fontSize: selectedNumber > 0 ? "24px" : "15px", 
-                fontWeight: "bold", 
-                color: selectedNumber > 0 ? "#222" : "#aaa",
-                textAlign: "center",
-                lineHeight: "1.3",
-                padding: "0 10px"
-              }}>
-                {trick1P}
-              </div>
+        {/* 【縦分割表示エリア】残りの画面の高さに上下50%ずつぴったりフィット（スクロール無し） */}
+        <div style={{ flex: 1, display: "grid", gridTemplateRows: "1fr 1fr", gap: "6px", overflow: "hidden" }}>
+          {/* 上側：1人目の結果表示 */}
+          <div style={{ background: "#f8fafc", borderLeft: "6px solid #ff4b4b", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0", borderRadius: "8px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px", boxSizing: "border-box" }}>
+            <span style={{ fontSize: "11px", color: "#ff4b4b", fontWeight: "bold", fontFamily: "monospace" }}>&gt;_ PLAYER_1 ({class1P})</span>
+            <div style={{ fontSize: selectedNumber > 0 ? "34px" : "16px", fontWeight: "bold", fontFamily: "'SFMono-Regular', Consolas, monospace", color: "#0f172a", textAlign: "center", marginTop: "8px", width: "100%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {trick1P}
             </div>
           </div>
 
-          {/* 右画面：2人目結果（青） */}
-          <div style={{ 
-            background: "#fff", 
-            borderTop: "5px solid #1e88e5", 
-            borderRadius: "8px", 
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-            boxSizing: "border-box",
-            padding: "8px"
-          }}>
-            {/* 段位選択を画面内に内包 */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #dbeafe", paddingBottom: "4px" }}>
-              <span style={{ fontSize: "14px", color: "#1e88e5", fontWeight: "bold" }}>🔵 2人目の段位</span>
-              <select value={class2P} onChange={(e) => setClass2P(e.target.value)} style={{ padding: "4px 8px", borderRadius: "4px", fontSize: "13px", border: "1px solid #ccc" }}>
-                {CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-            {/* 技名表示 */}
-            <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-              <div style={{ 
-                fontSize: selectedNumber > 0 ? "24px" : "15px", 
-                fontWeight: "bold", 
-                color: selectedNumber > 0 ? "#222" : "#aaa",
-                textAlign: "center",
-                lineHeight: "1.3",
-                padding: "0 10px"
-              }}>
-                {trick2P}
-              </div>
+          {/* 下側：2人目の結果表示 */}
+          <div style={{ background: "#f8fafc", borderLeft: "6px solid #1e88e5", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0", borderRadius: "8px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px", boxSizing: "border-box" }}>
+            <span style={{ fontSize: "11px", color: "#1e88e5", fontWeight: "bold", fontFamily: "monospace" }}>&gt;_ PLAYER_2 ({class2P})</span>
+            <div style={{ fontSize: selectedNumber > 0 ? "34px" : "16px", fontWeight: "bold", fontFamily: "'SFMono-Regular', Consolas, monospace", color: "#0f172a", textAlign: "center", marginTop: "8px", width: "100%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {trick2P}
             </div>
           </div>
-
         </div>
       </div>
     );
   }
 
-  // ■■■ 2. その他の通常の大会画面 ■■■
+  // ■■■ 2. その他の通常の大会画面（四国大会・クラス別大会） ■■■
   if (subPage !== "menu") {
     return (
       <div className="app">
