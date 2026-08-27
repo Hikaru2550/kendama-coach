@@ -83,61 +83,62 @@ export default function Moshikame({ onBack }: MoshikameProps) {
           ⬅ メニューへ戻る
         </button>
         <span style={{ marginLeft: "15px", fontSize: "10px", fontWeight: "700", letterSpacing: "2px", color: "#94a3b8", fontFamily: "monospace" }}>
-          SYS.LOC // AUDIO_METRONOME_V1.1
+          SYS.LOC // AUDIO_METRONOME_V2.0
         </span>
       </header>
 
-      {/* メインレイアウト（スマホの縦画面用に上下分割構造へアップデート） */}
+      {/* メインレイアウト（スマホの縦画面用に綺麗に上下でエリアを分離） */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px", height: "calc(100% - 41px)", overflow: "hidden" }}>
         
-        {/* 上段：メトロノーム ＆ 記録コントロールパネル */}
-        <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "10px 14px", display: "flex", flexDirection: "column", gap: "6px" }}>
+        {/* 【上半分】データ表示 ＆ メトロノーム（左右に分割して配置をスッキリ） */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "6px", height: "40%", minHeight: "150px", boxSizing: "border-box" }}>
           
-          {/* メトロノーム内部ボックス */}
-          <div style={{ background: "#ffffff", padding: "10px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-            <h3 style={{ margin: "0 0 8px 0", fontSize: "10px", fontWeight: "700", letterSpacing: "2px", color: "#94a3b8", fontFamily: "monospace" }}>🎵 AUDIO_METRONOME</h3>
-            
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
-              <span style={{ fontSize: "13px", fontWeight: "bold", fontFamily: "monospace" }}>TEMPO: {bpm} BPM</span>
-              <div style={{ display: "flex", gap: "4px" }}>
-                <button onClick={(e) => { e.stopPropagation(); setBpm(b => Math.max(40, b - 5)); }} style={{ padding: "4px 8px", background: "white", border: "1px solid #cbd5e1", cursor: "pointer", fontWeight: "bold", fontFamily: "monospace", fontSize: "11px", borderRadius: "4px" }}>-5</button>
-                <button onClick={(e) => { e.stopPropagation(); setBpm(b => Math.min(200, b + 5)); }} style={{ padding: "4px 8px", background: "white", border: "1px solid #cbd5e1", cursor: "pointer", fontWeight: "bold", fontFamily: "monospace", fontSize: "11px", borderRadius: "4px" }}>+5</button>
-              </div>
-            </div>
-            
-            <input type="range" min="60" max="200" value={bpm} onChange={(e) => setBpm(Number(e.target.value))} onClick={(e) => e.stopPropagation()} style={{ width: "100%", marginBottom: "8px", cursor: "pointer" }} />
-            
-            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-              <button onClick={(e) => { e.stopPropagation(); setIsMetroPlaying(!isMetroPlaying); }} style={{ flex: 1, height: "36px", background: isMetroPlaying ? "#0f172a" : "#e2e8f0", color: isMetroPlaying ? "#ffffff" : "#0f172a", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold", fontFamily: "monospace", fontSize: "13px" }}>
-                {isMetroPlaying ? "EXEC_STOP" : "EXEC_START"}
-              </button>
-              {/* 4つの拍子ライト */}
-              <div style={{ display: "flex", gap: "4px" }}>
-                <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: beat === 1 ? "#0f172a" : "#e2e8f0" }} />
-                <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: beat === 2 ? "#64748b" : "#e2e8f0" }} />
-                <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: beat === 3 ? "#64748b" : "#e2e8f0" }} />
-                <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: beat === 4 ? "#64748b" : "#e2e8f0" }} />
-              </div>
-            </div>
-          </div>
-
-          {/* 中央段：最高記録 & リカバリーボタンをコンパクトに横並び */}
-          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-            <div style={{ flex: 1.2, background: "#ffffff", padding: "8px 12px", borderRadius: "8px", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center", height: "42px", boxSizing: "border-box" }}>
+          {/* 左上：最高記録 と リカバリーボタン */}
+          <div style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+            <div style={{ background: "#ffffff", padding: "8px", borderRadius: "6px", border: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ fontSize: "11px", color: "#64748b", fontWeight: "bold", fontFamily: "monospace" }}>BEST:</span>
               <span style={{ fontSize: "18px", fontWeight: "bold", color: "#0f172a", fontFamily: "monospace" }}>{highScore}</span>
             </div>
             
-            <button onClick={(e) => { e.stopPropagation(); if (count > 0) setCount(count - 1); }} disabled={count === 0} style={{ flex: 1, height: "42px", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer", fontFamily: "monospace", fontSize: "11px" }}>[ -1 ]</button>
-            <button onClick={(e) => { e.stopPropagation(); if (window.confirm("リセットしますか？")) setCount(0); }} style={{ width: "70px", height: "42px", background: "#ef4444", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold", fontFamily: "monospace", fontSize: "11px" }}>RESET</button>
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              <button onClick={(e) => { e.stopPropagation(); if (count > 0) setCount(count - 1); }} disabled={count === 0} style={{ width: "100%", height: "32px", background: "#ffffff", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer", fontFamily: "monospace", fontSize: "11px" }}>[ -1 ]</button>
+              <button onClick={(e) => { e.stopPropagation(); if (window.confirm("リセットしますか？")) setCount(0); }} style={{ width: "100%", height: "32px", background: "#ef4444", color: "white", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontFamily: "monospace", fontSize: "11px" }}>RESET</button>
+            </div>
           </div>
+
+          {/* 🔥【右上】メトロノーム機能（ご要望通り右上の特等席に集約！） */}
+          <div style={{ background: "#ffffff", border: "1px solid #e2e8f0", borderRadius: "12px", padding: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span style={{ fontSize: "11px", fontWeight: "bold", fontFamily: "monospace" }}>BPM: {bpm}</span>
+              <div style={{ display: "flex", gap: "2px" }}>
+                <button onClick={(e) => { e.stopPropagation(); setBpm(b => Math.max(40, b - 5)); }} style={{ padding: "2px 6px", background: "white", border: "1px solid #cbd5e1", cursor: "pointer", fontSize: "11px", borderRadius: "3px" }}>-5</button>
+                <button onClick={(e) => { e.stopPropagation(); setBpm(b => Math.min(200, b + 5)); }} style={{ padding: "2px 6px", background: "white", border: "1px solid #cbd5e1", cursor: "pointer", fontSize: "11px", borderRadius: "3px" }}>+5</button>
+              </div>
+            </div>
+            
+            <input type="range" min="60" max="200" value={bpm} onChange={(e) => setBpm(Number(e.target.value))} onClick={(e) => e.stopPropagation()} style={{ width: "100%", cursor: "pointer", margin: "4px 0" }} />
+            
+            <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+              <button onClick={(e) => { e.stopPropagation(); setIsMetroPlaying(!isMetroPlaying); }} style={{ flex: 1, height: "34px", background: isMetroPlaying ? "#0f172a" : "#e2e8f0", color: isMetroPlaying ? "#ffffff" : "#0f172a", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold", fontFamily: "monospace", fontSize: "11px" }}>
+                {isMetroPlaying ? "STOP" : "START"}
+              </button>
+              {/* 4拍子インジケーター */}
+              <div style={{ display: "flex", gap: "3px" }}>
+                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 1 ? "#0f172a" : "#e2e8f0" }} />
+                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 2 ? "#64748b" : "#e2e8f0" }} />
+                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 3 ? "#64748b" : "#e2e8f0" }} />
+                <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: beat === 4 ? "#64748b" : "#e2e8f0" }} />
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        {/* 下段：超巨大カウントタップエリア（残りの画面すべてがボタン！） */}
+        {/* 🔥【下半分】超巨大カウントタップエリア（ご要望通り下半分すべてをカウントボタン化！） */}
         <div 
           onClick={handleCountUp}
           style={{ 
-            flex: 1,
+            flex: 1, // 残りの縦幅（約60%）をすべて使い切る
             background: isFlash ? "#f1f5f9" : "#f8fafc", 
             border: isFlash ? "1px solid #94a3b8" : "1px solid #e2e8f0", 
             borderRadius: "12px", display: "flex", flexDirection: "column", 
@@ -153,14 +154,14 @@ export default function Moshikame({ onBack }: MoshikameProps) {
           
           {/* 大迫力のIT等幅数字表示 */}
           <div style={{ 
-            fontSize: "115px", fontWeight: "400", 
+            fontSize: "120px", fontWeight: "400", 
             fontFamily: "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace", 
             fontVariantNumeric: "tabular-nums", color: "#0f172a", letterSpacing: "1px", lineHeight: "1.0", textAlign: "center" 
           }}>
             {count}
           </div>
           
-          <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "bold", marginTop: "12px" }}>ここをタップしてカウントアップ</span>
+          <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "bold", marginTop: "12px" }}>ここをタップしてカウント</span>
         </div>
 
       </div>
