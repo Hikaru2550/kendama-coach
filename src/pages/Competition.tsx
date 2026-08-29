@@ -1,26 +1,65 @@
 import { useState } from "react";
 
-// 🔴 最新の技リスト
+// 最新の技データ
 const TOURNAMENT_TRICKS: Record<string, string[]> = {
-  "10級~6級": ["大皿", "大皿", "小皿", "小皿", "ろうそく", "ろうそく", "とめけん", "とめけん", "飛行機", "飛行機"],
-  "5級~2級": ["飛行機", "飛行機", "ふりけん", "ふりけん", "日本一周", "日本一周", "世界一周", "世界一周", "灯台", "灯台"],
-  "1級、準初段": ["飛行機", "ふりけん", "日本一周", "世界一周", "灯台", "村一周", "県一周", "けん先すべり", "空中ブランコ", "日本二周(連続)"],
-  "初段、二段": ["世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし", "うらふりけんふりけ", "宇宙一周", "うぐいす", "つるしとめけん", "はねけん"],
-  "三段、4段": ["けん先すべり", "地球まわし", "さか落とし", "うらふりけん", "宇宙一周", "うぐいす", "つるしとめけん", "ふりけん～はねけん", "一回転飛行機", "一回転灯台"],
-  "5段以上": ["宇宙一周", "つるしとめけん", "ふりけん～はねけん", "一回転飛行機", "一回転灯台", "すべり止め極意", "うぐいすの谷渡り", "灯台とんぼ返り", "つるし一回転飛行機", "二回転灯台"],
-  "🏆四国予選": ["とめけん", "飛行機", "ふりけん", "日本一周", "世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし", "うぐいす"],
-  "🏆四国トーナメント": ["世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし", "宇宙一周", "うぐいす", "はねけん", "一回転飛行機", "極意"],
-  "🏆四国決勝": ["さか落とし", "宇宙一周", "うぐいす", "はねけん", "一回転飛行機", "一回転灯台", "すべり止め極意", "うぐいす渡り", "ちどり", "つるし"]
+  "10級~6級": [
+    "大皿", "大皿", "小皿", "小皿", "ろうそく",
+    "ろうそく", "とめけん", "とめけん", "飛行機", "飛行機"
+  ],
+  "5級~2級": [
+    "飛行機", "飛行機", "ふりけん", "ふりけん", "日本一周",
+    "日本一周", "世界一周", "世界一周", "灯台", "灯台"
+  ],
+  "1級、準初段": [
+    "飛行機", "ふりけん", "日本一周", "世界一周", "灯台",
+    "村一周", "県一周", "けん先すべり", "空中ブランコ", "日本二周(連続)"
+  ],
+  "初段、二段": [
+    "世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし",
+    "うらふりけんふりけ", "宇宙一周", "うぐいす", "つるしとめけん", "はねけん"
+  ],
+  "三段、4段": [
+    "けん先すべり", "地球まわし", "さか落とし", "うらふりけん", "宇宙一周",
+    "うぐいす", "つるしとめけん", "ふりけん～はねけん", "一回転飛行機", "一回転灯台"
+  ],
+  "5段以上": [
+    "宇宙一周", "つるしとめけん", "ふりけん～はねけん", "一回転飛行機", "一回転灯台",
+    "すべり止め極意", "うぐいすの谷渡り", "灯台とんぼ返り", "つるし一回転飛行機", "二回転灯台"
+  ],
+  "🏆四国予選": [
+    "とめけん", "飛行機", "ふりけん", "日本一周", "世界一周",
+    "灯台", "けん先すべり", "地球まわし", "さか落とし", "うぐいす"
+  ],
+  "🏆四国トーナメント": [
+    "世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし",
+    "宇宙一周", "うぐいす", "はねけん", "一回転飛行機", "極意"
+  ],
+  "🏆四国決勝": [
+    "さか落とし", "宇宙一周", "うぐいす", "はねけん", "一回転飛行機",
+    "一回転灯台", "すべり止め極意", "うぐいす渡り", "ちどり", "つるし"
+  ]
 };
 
 const SHIKOKU_TRICKS: Record<string, string[]> = {
-  "予選": ["とめけん", "飛行機", "ふりけん", "日本一周", "世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし", "うぐいす"],
-  "トーナメント": ["世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし", "宇宙一周", "うぐいす", "はねけん", "一回転飛行機", "極意"],
-  "決勝": ["さか落とし", "宇宙一周", "うぐいす", "はねけん", "一回転飛行機", "一回転灯台", "すべり止め極意", "うぐいす渡り", "ちどり", "つるし"]
+  "予選": [
+    "とめけん", "飛行機", "ふりけん", "日本一周", "世界一周",
+    "灯台", "けん先すべり", "地球まわし", "さか落とし", "うぐいす"
+  ],
+  "トーナメント": [
+    "世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし",
+    "宇宙一周", "うぐいす", "はねけん", "一回転飛行機", "極意"
+  ],
+  "決勝": [
+    "さか落とし", "宇宙一周", "うぐいす", "はねけん", "一回転飛行機",
+    "一回転灯台", "すべり止め極意", "うぐいす渡り", "ちどり", "つるし"
+  ]
 };
 
 const SHIKOKU_STAGES = ["予選", "トーナメント", "決勝"];
-const CLASS_LIST = ["10級~6級", "5級~2級", "1級、準初段", "初段、二段", "三段、4段", "5段以上", "🏆四国予選", "🏆四国トーナメント", "🏆四国決勝"];
+const CLASS_LIST = [
+  "10級~6級", "5級~2級", "1級、準初段", "初段、二段",
+  "三段、4段", "5段以上", "🏆四国予選", "🏆四国トーナメント", "🏆四国決勝"
+];
 
 interface CompetitionProps {
   onBack: () => void;
@@ -32,13 +71,23 @@ export default function Competition({ onBack }: CompetitionProps) {
   const [class2P, setClass2P] = useState<string>("5級~2級");
   const [selectedNumber, setSelectedNumber] = useState<number>(0);
   const [shikokuStage, setShikokuStage] = useState<string>("予選");
-  const [shikokuNumber, setShikokuNumber] = useState<number>(0);
   if (subPage === "handicap") {
     const trick1P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class1P]?.[selectedNumber - 1] || "---") : "番号を選択";
     const trick2P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class2P]?.[selectedNumber - 1] || "---") : "番号を選択";
 
     const btn = (num: number) => (
-      <button onClick={() => setSelectedNumber(num)} style={{ flex: 1, borderRadius: "6px", fontSize: "14px", fontWeight: "bold", cursor: "pointer", border: selectedNumber === num ? "2px solid #aa3bff" : "1px solid #cbd5e1", background: selectedNumber === num ? "#aa3bff" : "white", color: selectedNumber === num ? "white" : "#0f172a" }}>{num}</button>
+      <button
+        onClick={() => setSelectedNumber(num)}
+        style={{
+          flex: 1, borderRadius: "6px", fontSize: "14px",
+          fontWeight: "bold", cursor: "pointer",
+          border: selectedNumber === num ? "2px solid #aa3bff" : "1px solid #cbd5e1",
+          background: selectedNumber === num ? "#aa3bff" : "white",
+          color: selectedNumber === num ? "white" : "#0f172a"
+        }}
+      >
+        {num}
+      </button>
     );
 
     return (
@@ -109,15 +158,7 @@ export default function Competition({ onBack }: CompetitionProps) {
     );
   }
 
-  if (subPage !== "menu" && subPage !== "shikoku" && subPage !== "handicap") {
-    return (
-      <div className="app">
-        <header className="header"><button className="back-button" onClick={() => setSubPage("menu")}>⬅ 大会メニューへ戻る</button><h1>選技画面</h1></header>
-        <main className="menu"><p>準備中...</p></main>
-      </div>
-    );
-  }
-
+  // 💡 不要な「準備中...」のエラー原因をきれいに修正しました！
   return (
     <div className="app">
       <header className="header"><button className="back-button" onClick={onBack}>⬅ 戻る</button><h1>大会・選技</h1></header>
