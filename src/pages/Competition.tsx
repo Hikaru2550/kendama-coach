@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// 最新の技データ
 const TOURNAMENT_TRICKS: Record<string, string[]> = {
   "10級~6級": [
     "大皿", "大皿", "小皿", "小皿", "ろうそく",
@@ -93,7 +92,7 @@ export default function Competition({ onBack }: CompetitionProps) {
     return (
       <div style={{ width: "100vw", height: "100vh", maxHeight: "100svh", display: "flex", flexDirection: "column", background: "#ffffff", color: "#0f172a", overflow: "hidden", boxSizing: "border-box", padding: "6px", fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" }}>
         <header style={{ display: "flex", alignItems: "center", height: "35px", borderBottom: "1px solid #e2e8f0", marginBottom: "4px" }}>
-          <button onClick={() => { setSubPage("menu"); setSelectedNumber(0); }} style={{ margin: 0, padding: "4px 12px", fontSize: "12px", fontWeight: "bold", background: "#ffffff", color: "#0f172a", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer" }}>⬅ メニューへ戻る</button>
+          <button onClick={() => { setSubPage("menu"); setSelectedNumber(0); }} style={{ margin: 0, padding: "4px 12px", fontSize: "12px", fontWeight: "bold", background: "#ffffff", color: "#0f172a", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer" }}>⬅ メメニューへ戻る</button>
         </header>
         <div style={{ background: "#f8fafc", padding: "8px", borderRadius: "8px", border: "1px solid #e2e8f0", marginBottom: "6px", display: "flex", flexDirection: "column", gap: "8px" }}>
           <div style={{ display: "flex", gap: "8px" }}>
@@ -128,11 +127,12 @@ export default function Competition({ onBack }: CompetitionProps) {
       </div>
     );
   }
+
   if (subPage === "shikoku") {
     const activeTricks = SHIKOKU_TRICKS[shikokuStage] || [];
     return (
       <div style={{ width: "100vw", height: "100vh", maxHeight: "100svh", display: "flex", flexDirection: "column", background: "#ffffff", color: "#0f172a", overflow: "hidden", boxSizing: "border-box", padding: "6px", fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" }}>
-        <header style={{ display: "flex", alignItems: "center", height: "35px", borderBottom: "1px solid #e2e8f0", marginBottom: "4px" }}>
+        <header style={{ display: "flex", alignItems: "center", height: "35px", borderBottom: "1px solid #e2e8f0", marginBottom: "6px" }}>
           <button onClick={() => setSubPage("menu")} style={{ margin: 0, padding: "4px 12px", fontSize: "12px", fontWeight: "bold", background: "#ffffff", color: "#0f172a", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer" }}>⬅ メニューへ戻る</button>
         </header>
         <div style={{ background: "#f8fafc", padding: "8px", borderRadius: "8px", border: "1px solid #e2e8f0", marginBottom: "6px" }}>
@@ -157,11 +157,14 @@ export default function Competition({ onBack }: CompetitionProps) {
       </div>
     );
   }
-
-  // 💡 不要な「準備中...」のエラー原因をきれいに修正しました！
+  // 💡 [改善点] 「大会・選技」トップの戻るボタンの重なり・ズレを完全解消！
   return (
     <div className="app">
-      <header className="header"><button className="back-button" onClick={onBack}>⬅ 戻る</button><h1>大会・選技</h1></header>
+      {/* 他の画面（タイム競技やもしかめ）の美しいヘッダー構造と100%統一しました */}
+      <header className="header" style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+        <button className="back-button" onClick={onBack} style={{ position: "absolute", left: "10px" }}>⬅ 戻る</button>
+        <h1 style={{ margin: 0 }}>大会・選技</h1>
+      </header>
       <main className="menu">
         <button className="menu-button" onClick={() => setSubPage("handicap")}><span>🎴</span><strong>ハンデ付き選技</strong><small>段位に応じた技を2画面で表示</small></button>
         <button className="menu-button" onClick={() => setSubPage("shikoku")}><span>🏆</span><strong>四国大会</strong><small>予選・トーナメント・決勝の選技</small></button>
