@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-// ハンデ付き選技用の地区大会データ
-const TOURNAMENT_TRICKS: Record<string, string[]> = {
+// 🔴「クラス別大会」専用の技データ
+const CLASS_TOURNAMENT_TRICKS: Record<string, string[]> = {
   "10級~6級": [
     "大皿", "大皿", "小皿", "小皿", "ろうそく",
     "ろうそく", "とめけん", "とめけん", "飛行機", "飛行機"
@@ -25,6 +25,34 @@ const TOURNAMENT_TRICKS: Record<string, string[]> = {
   "5段以上": [
     "宇宙一周", "つるしとめけん", "ふりけん～はねけん", "一回転飛行機", "一回転灯台",
     "すべり止め極意", "うぐいすの谷渡り", "灯台とんぼ返り", "つるし一回転飛行機", "二回転灯台"
+  ]
+};
+
+// 🎴「ハンデ付き選技」専用の技データ（クラス別とは別の技を自由に入力・編集してください）
+const HANDICAP_TRICKS: Record<string, string[]> = {
+  "10級~6級": [
+    "大皿", "大皿", "小皿", "小皿", "中皿",
+    "中皿", "ろうそく", "ろうそく", "とめけん", "とめけん"
+  ],
+  "5級~2級": [
+    "とめけん", "とめけん", "飛行機", "飛行機", "ふりけん",
+    "ふりけん", "日本一周", "日本一周", "世界一周", "世界一周"
+  ],
+  "1級、準初段": [
+    "ふりけん", "日本一周", "世界一周", "灯台", "けん先すべり",
+    "地球まわし", "さか落とし", "うぐいす", "はねけん", "一回転飛行機"
+  ],
+  "初段、二段": [
+    "灯台", "けん先すべり", "地球まわし", "さか落とし", "うぐいす",
+    "はねけん", "一回転飛行機", "一回転灯台", "うらふりけん", "宇宙一周"
+  ],
+  "三段、4段": [
+    "うぐいす", "はねけん", "一回転飛行機", "一回転灯台", "うらふりけん",
+    "宇宙一周", "つるしとめけん", "すべり止め極意", "うぐいすの谷渡り", "灯台とんぼ返り"
+  ],
+  "5段以上": [
+    "一回転灯台", "うらふりけん", "宇宙一周", "つるしとめけん", "すべり止め極意",
+    "うぐいすの谷渡り", "灯台とんぼ返り", "つるし一回転飛行機", "二回転灯台", "けん先表裏すべり"
   ],
   "🏆地区大会予選": [
     "とめけん", "飛行機", "ふりけん", "世界一周", "けん先すべり",
@@ -40,7 +68,7 @@ const TOURNAMENT_TRICKS: Record<string, string[]> = {
   ]
 };
 
-// リスト画面用のデータ
+// 🏆「地区大会メニュー」の一覧表示用データ
 const SHIKOKU_TRICKS: Record<string, string[]> = {
   "地区大会予選": [
     "とめけん", "飛行機", "ふりけん", "世界一周", "けん先すべり",
@@ -57,9 +85,15 @@ const SHIKOKU_TRICKS: Record<string, string[]> = {
 };
 
 const SHIKOKU_STAGES = ["地区大会予選", "地区大会トーナメント", "地区大会決勝"];
-const CLASS_LIST = [
+
+// 各セレクトボックスで出し分けるためのリスト定義
+const HANDICAP_CLASS_LIST = [
   "10級~6級", "5級~2級", "1級、準初段", "初段、二段",
   "三段、4段", "5段以上", "🏆地区大会予選", "🏆地区大会トーナメント", "🏆地区大会決勝"
+];
+
+const PURE_CLASS_LIST = [
+  "10級~6級", "5級~2級", "1級、準初段", "初段、二段", "三段、4段", "5段以上"
 ];
 
 interface CompetitionProps {
@@ -76,8 +110,8 @@ export default function Competition({ onBack }: CompetitionProps) {
 
   // --- ハンデ付き選技画面 ---
   if (subPage === "handicap") {
-    const trick1P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class1P]?.[selectedNumber - 1] || "---") : "番号を選択";
-    const trick2P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class2P]?.[selectedNumber - 1] || "---") : "番号を選択";
+    const trick1P = selectedNumber > 0 ? (HANDICAP_TRICKS[class1P]?.[selectedNumber - 1] || "---") : "番号を選択";
+    const trick2P = selectedNumber > 0 ? (HANDICAP_TRICKS[class2P]?.[selectedNumber - 1] || "---") : "番号を選択";
 
     const btn = (num: number) => (
       <button
@@ -105,13 +139,13 @@ export default function Competition({ onBack }: CompetitionProps) {
             <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "4px", background: "#ffffff", padding: "4px 8px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
               <span style={{ fontSize: "11px", color: "#ff4b4b", fontWeight: "bold", whiteSpace: "nowrap" }}>🔴1人目:</span>
               <select value={class1P} onChange={(e) => setClass1P(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
-                {CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
+                {HANDICAP_CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
             <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "4px", background: "#ffffff", padding: "4px 8px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
               <span style={{ fontSize: "11px", color: "#1e88e5", fontWeight: "bold", whiteSpace: "nowrap" }}>🔵2人目:</span>
               <select value={class2P} onChange={(e) => setClass2P(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
-                {CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
+                {HANDICAP_CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
           </div>
@@ -177,55 +211,23 @@ export default function Competition({ onBack }: CompetitionProps) {
     );
   }
 
-  // --- 🔴 クラス別大会（技一覧リスト確認画面） ---
+  // --- 🔴 クラス別大会（地区大会と同じ縦並びのリスト画面） ---
   if (subPage === "class") {
-    const activeTricks = TOURNAMENT_TRICKS[activeClass] || [];
-
-    const classBtn = (num: number) => (
-      <button
-        key={num}
-        onClick={() => setSelectedNumber(num)}
-        style={{
-          flex: 1, borderRadius: "6px", fontSize: "14px",
-          fontWeight: "bold", cursor: "pointer",
-          border: selectedNumber === num ? "2px solid #ff4b4b" : "1px solid #cbd5e1",
-          background: selectedNumber === num ? "#ff4b4b" : "white",
-          color: selectedNumber === num ? "white" : "#0f172a"
-        }}
-      >
-        {num}
-      </button>
-    );
+    // クラス別専用のデータ（CLASS_TOURNAMENT_TRICKS）から技を取得
+    const activeTricks = CLASS_TOURNAMENT_TRICKS[activeClass] || [];
 
     return (
       <div style={{ width: "100vw", height: "100vh", maxHeight: "100svh", display: "flex", flexDirection: "column", background: "#ffffff", color: "#0f172a", overflow: "hidden", boxSizing: "border-box", padding: "6px", fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" }}>
         <header style={{ display: "flex", alignItems: "center", height: "35px", borderBottom: "1px solid #e2e8f0", marginBottom: "6px" }}>
           <button onClick={() => setSubPage("menu")} style={{ margin: 0, padding: "4px 12px", fontSize: "12px", fontWeight: "bold", background: "#ffffff", color: "#0f172a", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer" }}>⬅ メニューへ戻る</button>
         </header>
-        <div style={{ background: "#f8fafc", padding: "8px", borderRadius: "8px", border: "1px solid #e2e8f0", marginBottom: "6px", display: "flex", flexDirection: "column", gap: "8px" }}>
-          <div style={{ display: "flex", gap: "8px" }}>
-            <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "4px", background: "#ffffff", padding: "4px 8px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
-              <span style={{ fontSize: "12px", color: "#ff4b4b", fontWeight: "bold", whiteSpace: "nowrap" }}>🔴 クラス選択:</span>
-              <select value={activeClass} onChange={(e) => setActiveClass(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "13px", fontWeight: "bold", background: "none", color: "#0f172a", cursor: "pointer" }}>
-                {CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <div style={{ display: "flex", gap: "4px", height: "35px" }}>
-              {classBtn(1)}
-              {classBtn(2)}
-              {classBtn(3)}
-              {classBtn(4)}
-              {classBtn(5)}
-            </div>
-            <div style={{ display: "flex", gap: "4px", height: "35px" }}>
-              {classBtn(6)}
-              {classBtn(7)}
-              {classBtn(8)}
-              {classBtn(9)}
-              {classBtn(10)}
-            </div>
+        <div style={{ background: "#f8fafc", padding: "8px", borderRadius: "8px", border: "1px solid #e2e8f0", marginBottom: "6px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#ffffff", padding: "6px 10px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
+            <span style={{ fontSize: "12px", color: "#ff4b4b", fontWeight: "bold", whiteSpace: "nowrap" }}>🔴 クラス選択:</span>
+            {/* 純粋なクラスだけのリスト（PURE_CLASS_LIST）を表示 */}
+            <select value={activeClass} onChange={(e) => setActiveClass(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "13px", fontWeight: "bold", background: "none", color: "#0f172a", cursor: "pointer" }}>
+              {PURE_CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
           </div>
         </div>
         <div style={{ flex: 1, background: "#f8fafc", borderLeft: "6px solid #ff4b4b", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0", borderRadius: "8px", padding: "10px", boxSizing: "border-box", display: "flex", flexDirection: "column", overflow: "hidden" }}>
