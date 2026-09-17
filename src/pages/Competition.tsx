@@ -158,7 +158,54 @@ export default function Competition({ onBack }: CompetitionProps) {
       </div>
     );
   }
+if (subPage === "class") {
+    // クラス別大会用の選択されている状態
+    const trick1P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class1P]?.[selectedNumber - 1] || "---") : "番号を選択";
+    const trick2P = selectedNumber > 0 ? (TOURNAMENT_TRICKS[class2P]?.[selectedNumber - 1] || "---") : "番号を選択";
 
+    const btn = (num: number) => (
+      <button
+        onClick={() => setSelectedNumber(num)}
+        style={{
+          flex: 1, borderRadius: "6px", fontSize: "14px",
+          fontWeight: "bold", cursor: "pointer",
+          border: selectedNumber === num ? "2px solid #ff4b4b" : "1px solid #cbd5e1",
+          background: selectedNumber === num ? "#ff4b4b" : "white",
+          color: selectedNumber === num ? "white" : "#0f172a"
+        }}
+      >
+        {num}
+      </button>
+    );
+
+    return (
+      <div style={{ width: "100vw", height: "100vh", maxHeight: "100svh", display: "flex", flexDirection: "column", background: "#ffffff", color: "#0f172a", overflow: "hidden", boxSizing: "border-box", padding: "6px", fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" }}>
+        <header style={{ display: "flex", alignItems: "center", height: "35px", borderBottom: "1px solid #e2e8f0", marginBottom: "4px" }}>
+          <button onClick={() => { setSubPage("menu"); setSelectedNumber(0); }} style={{ margin: 0, padding: "4px 12px", fontSize: "12px", fontWeight: "bold", background: "#ffffff", color: "#0f172a", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer" }}>⬅ メニューへ戻る</button>
+        </header>
+        <div style={{ background: "#f8fafc", padding: "8px", borderRadius: "8px", border: "1px solid #e2e8f0", marginBottom: "6px", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "4px", background: "#ffffff", padding: "4px 8px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
+              <span style={{ fontSize: "11px", color: "#ff4b4b", fontWeight: "bold", whiteSpace: "nowrap" }}>🔴クラス:</span>
+              <select value={class1P} onChange={(e) => setClass1P(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
+                {CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <div style={{ display: "flex", gap: "4px", height: "35px" }}>{btn(1)} {btn(2)} {btn(3)} {btn(4)} {btn(5)}</div>
+            <div style={{ display: "flex", gap: "4px", height: "35px" }}>{btn(6)} {btn(7)} {btn(8)} {btn(9)} {btn(10)}</div>
+          </div>
+        </div>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+          <div style={{ flex: 1, background: "#f8fafc", borderLeft: "6px solid #ff4b4b", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0", borderRadius: "8px", display: "flex", flexDirection: "column", alignItems: "center", padding: "12px", boxSizing: "border-box", justifyContent: "center" }}>
+            <span style={{ fontSize: "11px", color: "#ff4b4b", fontWeight: "bold", fontFamily: "monospace", marginBottom: "6px" }}>&gt;_ CLASS_TOURNAMENT // {class1P}</span>
+            <div style={{ fontSize: "26px", fontWeight: "700", fontFamily: "'SFMono-Regular', Consolas, monospace", color: "#0f172a", textAlign: "center", width: "100%", whiteSpace: "normal", wordBreak: "break-word", lineHeight: "1.4", padding: "0 6px" }}>{trick1P}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="app">
       <header className="header" style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
