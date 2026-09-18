@@ -92,7 +92,7 @@ const HANDICAP_CLASS_LIST = [
 ];
 
 const PURE_CLASS_LIST = [
-  "10級~6級", "5級~2級", "1級、準初段", "初段、二段", "三段、4段", "5段以上"
+  "Sクラス", "5級~2級", "1級、準初段", "初段、二段", "三段、4段", "5段以上"
 ];
 
 interface CompetitionProps {
