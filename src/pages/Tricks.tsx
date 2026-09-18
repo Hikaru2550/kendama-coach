@@ -82,7 +82,7 @@ export default function Tricks({ onBack }: TricksProps) {
         {/* 💡 選択されたのが「タイム競技B」のときだけ、下部に合格基準タイムを綺麗に表示 */}
         {subPage === "タイム競技B" && (
           <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #e2e8f0" }}>
-            <span style={{ fontSize: "11px", fontWeight: "bold", color: "#64748b", display: "block", marginBottom: "6px" }}>⏱️ 段位別 合格基準タイム</span>
+            <span style={{ fontSize: "11px", fontWeight: "bold", color: "#64748b", display: "block", marginBottom: "6px" }}>⏱️ 段位別 合格タイム</span>
             <div style={{ display: "flex", gap: "6px" }}>
               {TIME_LIMITS_DATA.map((item) => (
                 <div 
