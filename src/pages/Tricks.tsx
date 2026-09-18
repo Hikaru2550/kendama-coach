@@ -1,23 +1,29 @@
 import { useState } from "react";
 
-// 📚 今後いくらでも追加できる技の一覧データ
+// 📚 正確な技の一覧データ（公式ルールに準拠）
 const TRICK_LISTS_DATA: Record<string, string[]> = {
   "タイム競技B": [
-    "前振りろうそく",
+    "前ふりろうそく",
     "県一周",
-    "日本二周",
-    "世界二周",
+    "日本一周2回連続",
+    "世界一周2回連続",
     "ヨーロッパ一周",
     "地球まわし",
-    "うぐいすけん",
+    "うぐいす～けん",
     "はねけん",
     "一回転飛行機",
     "さか落とし"
   ],
-  // 💡 今後ここに新しいジャンルを増やすだけで自動的にボタンが増えます！
   "級位の技(準備中)": ["大皿", "小皿", "中皿", "ろうそく", "とめけん"],
   "段位の技(準備中)": ["世界一周", "灯台", "地球まわし", "うぐいす", "はねけん"]
 };
+
+// ⏱️ タイム競技Bの正しい段位合格タイム基準（三段〜五段）
+const TIME_LIMITS_DATA = [
+  { rank: "三段", time: "120秒以内" },
+  { rank: "四段", time: "60秒以内" },
+  { rank: "五段", time: "45秒以内" }
+];
 
 interface TricksProps {
   onBack: () => void;
@@ -60,8 +66,10 @@ export default function Tricks({ onBack }: TricksProps) {
         <button onClick={() => setSubPage("menu")} style={{ margin: 0, padding: "4px 12px", fontSize: "12px", fontWeight: "bold", background: "#ffffff", color: "#0f172a", border: "1px solid #cbd5e1", borderRadius: "4px", cursor: "pointer" }}>⬅ メニューへ戻る</button>
       </header>
 
+      {/* 技リストのスクロールエリア */}
       <div style={{ flex: 1, background: "#f8fafc", borderLeft: "6px solid #2563eb", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0", borderRadius: "8px", padding: "10px", boxSizing: "border-box", display: "flex", flexDirection: "column", overflow: "hidden" }}>
         <span style={{ fontSize: "10px", color: "#2563eb", fontWeight: "bold", fontFamily: "monospace", marginBottom: "8px" }}>&gt;_ TRICK_LIST // {subPage.toUpperCase()}</span>
+        
         <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: "4px", paddingRight: "2px" }}>
           {activeTricks.map((trick, index) => (
             <div key={index} style={{ display: "flex", alignItems: "center", background: "#ffffff", padding: "8px 12px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
@@ -70,6 +78,34 @@ export default function Tricks({ onBack }: TricksProps) {
             </div>
           ))}
         </div>
+
+        {/* 💡 選択されたのが「タイム競技B」のときだけ、下部に合格基準タイムを綺麗に表示 */}
+        {subPage === "タイム競技B" && (
+          <div style={{ marginTop: "10px", paddingTop: "8px", borderTop: "1px solid #e2e8f0" }}>
+            <span style={{ fontSize: "11px", fontWeight: "bold", color: "#64748b", display: "block", marginBottom: "6px" }}>⏱️ 段位別 合格基準タイム</span>
+            <div style={{ display: "flex", gap: "6px" }}>
+              {TIME_LIMITS_DATA.map((item) => (
+                <div 
+                  key={item.rank} 
+                  style={{ 
+                    flex: 1, 
+                    background: "#eff6ff", 
+                    border: "1px solid #bfdbfe", 
+                    borderRadius: "6px", 
+                    padding: "6px 4px", 
+                    textAlign: "center",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "2px"
+                  }}
+                >
+                  <strong style={{ fontSize: "12px", color: "#1e40af" }}>{item.rank}</strong>
+                  <span style={{ fontSize: "11px", fontWeight: "bold", color: "#1e3a8a", whiteSpace: "nowrap" }}>{item.time}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
