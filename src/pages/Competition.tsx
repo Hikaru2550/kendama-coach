@@ -1,58 +1,35 @@
 import { useState } from "react";
 
-// 🔴「クラス別大会」専用の技データ
+// 🔴「クラス別大会」専用の技データ（5種目に変更された場合はここを自由に変えてください）
 const CLASS_TOURNAMENT_TRICKS: Record<string, string[]> = {
-  "Sクラス": [
-    "うぐいすの谷渡り", "灯台～けん", "二回転灯台", "一回転飛行機～灯立", "ふりけん＜もちかえて＞はねけん",
+  "10級~6級": [
+    "大皿", "大皿", "小皿", "小皿", "ろうそく"
   ],
   "5級~2級": [
-    "飛行機", "飛行機", "ふりけん", "ふりけん", "日本一周",
-    "日本一周", "世界一周", "世界一周", "灯台", "灯台"
+    "飛行機", "飛行機", "ふりけん", "ふりけん", "日本一周"
   ],
   "1級、準初段": [
-    "飛行機", "ふりけん", "日本一周", "世界一周", "灯台",
-    "村一周", "県一周", "けん先すべり", "日本二周(連続)", "世界二周(連続)"
+    "飛行機", "ふりけん", "日本一周", "世界一周", "灯台"
   ],
   "初段、二段": [
-    "世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし",
-    "うらふりけんふりけ", "宇宙一周", "うぐいす", "つるしとめけん", "はねけん"
+    "世界一周", "灯台", "けん先すべり", "地球まわし", "さか落とし"
   ],
   "三段、4段": [
-    "けん先すべり", "地球まわし", "さか落とし", "うらふりけん", "宇宙一周",
-    "うぐいす", "つるしとめけん", "ふりけん～はねけん", "一回転飛行機", "一回転灯台"
+    "けん先すべり", "地球まわし", "さか落とし", "うらふりけん", "宇宙一周"
   ],
   "5段以上": [
-    "宇宙一周", "つるしとめけん", "ふりけん～はねけん", "一回転飛行機", "一回転灯台",
-    "すべり止め極意", "うぐいすの谷渡り", "灯台とんぼ返り", "つるし一回転飛行機", "二回転灯台"
+    "宇宙一周", "つるしとめけん", "ふりけん～はねけん", "一回転飛行機", "一回転灯台"
   ]
 };
 
-// 🎴「ハンデ付き選技」専用の技データ（クラス別とは別の技を自由に入力・編集してください）
+// 🎴「ハンデ付き選技」専用の技データ（ここも5種目や10種目、何個でも対応できます）
 const HANDICAP_TRICKS: Record<string, string[]> = {
-  "10級~6級": [
-    "大皿", "大皿", "小皿", "小皿", "中皿",
-    "中皿", "ろうそく", "ろうそく", "とめけん", "とめけん"
-  ],
-  "5級~2級": [
-    "とめけん", "とめけん", "飛行機", "飛行機", "ふりけん",
-    "ふりけん", "日本一周", "日本一周", "世界一周", "世界一周"
-  ],
-  "1級、準初段": [
-    "ふりけん", "日本一周", "世界一周", "灯台", "けん先すべり",
-    "地球まわし", "さか落とし", "うぐいす", "はねけん", "一回転飛行機"
-  ],
-  "初段、二段": [
-    "灯台", "けん先すべり", "地球まわし", "さか落とし", "うぐいす",
-    "はねけん", "一回転飛行機", "一回転灯台", "うらふりけん", "宇宙一周"
-  ],
-  "三段、4段": [
-    "うぐいす", "はねけん", "一回転飛行機", "一回転灯台", "うらふりけん",
-    "宇宙一周", "つるしとめけん", "すべり止め極意", "うぐいすの谷渡り", "灯台とんぼ返り"
-  ],
-  "5段以上": [
-    "一回転灯台", "うらふりけん", "宇宙一周", "つるしとめけん", "すべり止め極意",
-    "うぐいすの谷渡り", "灯台とんぼ返り", "つるし一回転飛行機", "二回転灯台", "けん先表裏すべり"
-  ],
+  "10級~6級": ["大皿", "小皿", "中皿", "ろうそく", "とめけん"],
+  "5級~2級": ["とめけん", "飛行機", "ふりけん", "日本一周", "世界一周"],
+  "1級、準初段": ["ふりけん", "日本一周", "世界一周", "灯台", "けん先すべり"],
+  "初段、二段": ["灯台", "けん先すべり", "地球まわし", "さか落とし", "うぐいす"],
+  "三段、4段": ["うぐいす", "はねけん", "一回転飛行機", "一回転灯台", "うらふりけん"],
+  "5段以上": ["一回転灯台", "うらふりけん", "宇宙一周", "つるしとめけん", "すべり止め極意"],
   "🏆地区大会予選": [
     "とめけん", "飛行機", "ふりけん", "世界一周", "けん先すべり",
     "うぐいす", "うらふりけん", "つるしとめけん", "宇宙一周", "地球まわし"
@@ -63,7 +40,7 @@ const HANDICAP_TRICKS: Record<string, string[]> = {
   ],
   "🏆地区大会決勝": [
     "うぐいすの谷渡り", "うらふりけん～宇宙一周", "つるし一回転飛行機", "けん先表裏すべり", "すべり止め極意",
-    "灯台～けん", "二回転灯台", "一回転飛行機～灯立", "ふりけんもちかえてはねけん", "つるし一回転灯台～とんぼ返り"
+    "灯台～けん", "二回転灯台", "一回転飛行機～倒立", "ふりけんもちかえてはねけん", "つるし一回転灯台～とんぼ返り"
   ]
 };
 
@@ -85,14 +62,13 @@ const SHIKOKU_TRICKS: Record<string, string[]> = {
 
 const SHIKOKU_STAGES = ["地区大会予選", "地区大会トーナメント", "地区大会決勝"];
 
-// 各セレクトボックスで出し分けるためのリスト定義
 const HANDICAP_CLASS_LIST = [
   "10級~6級", "5級~2級", "1級、準初段", "初段、二段",
   "三段、4段", "5段以上", "🏆地区大会予選", "🏆地区大会トーナメント", "🏆地区大会決勝"
 ];
 
 const PURE_CLASS_LIST = [
-  "Sクラス", "5級~2級", "1級、準初段", "初段、二段", "三段、4段", "5段以上"
+  "10級~6級", "5級~2級", "1級、準初段", "初段、二段", "三段、4段", "5段以上"
 ];
 
 interface CompetitionProps {
@@ -109,24 +85,15 @@ export default function Competition({ onBack }: CompetitionProps) {
 
   // --- ハンデ付き選技画面 ---
   if (subPage === "handicap") {
-    const trick1P = selectedNumber > 0 ? (HANDICAP_TRICKS[class1P]?.[selectedNumber - 1] || "---") : "番号を選択";
-    const trick2P = selectedNumber > 0 ? (HANDICAP_TRICKS[class2P]?.[selectedNumber - 1] || "---") : "番号を選択";
+    const tricks1PList = HANDICAP_TRICKS[class1P] || [];
+    const tricks2PList = HANDICAP_TRICKS[class2P] || [];
+    
+    const trick1P = selectedNumber > 0 ? (tricks1PList[selectedNumber - 1] || "---") : "番号を選択";
+    const trick2P = selectedNumber > 0 ? (tricks2PList[selectedNumber - 1] || "---") : "番号を選択";
 
-    const btn = (num: number) => (
-      <button
-        key={num}
-        onClick={() => setSelectedNumber(num)}
-        style={{
-          flex: 1, borderRadius: "6px", fontSize: "14px",
-          fontWeight: "bold", cursor: "pointer",
-          border: selectedNumber === num ? "2px solid #aa3bff" : "1px solid #cbd5e1",
-          background: selectedNumber === num ? "#aa3bff" : "white",
-          color: selectedNumber === num ? "white" : "#0f172a"
-        }}
-      >
-        {num}
-      </button>
-    );
+    // 最大の技数に合わせてボタンを作る（5個なら5個、10個なら10個自動で並ぶ）
+    const maxTricksCount = Math.max(tricks1PList.length, tricks2PList.length);
+    const buttonNumbers = Array.from({ length: maxTricksCount }, (_, i) => i + 1);
 
     return (
       <div style={{ width: "100vw", height: "100vh", maxHeight: "100svh", display: "flex", flexDirection: "column", background: "#ffffff", color: "#0f172a", overflow: "hidden", boxSizing: "border-box", padding: "6px", fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif" }}>
@@ -137,32 +104,33 @@ export default function Competition({ onBack }: CompetitionProps) {
           <div style={{ display: "flex", gap: "8px" }}>
             <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "4px", background: "#ffffff", padding: "4px 8px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
               <span style={{ fontSize: "11px", color: "#ff4b4b", fontWeight: "bold", whiteSpace: "nowrap" }}>🔴1人目:</span>
-              <select value={class1P} onChange={(e) => setClass1P(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
+              <select value={class1P} onChange={(e) => { setClass1P(e.target.value); setSelectedNumber(0); }} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
                 {HANDICAP_CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
             <div style={{ flex: 1, display: "flex", alignItems: "center", gap: "4px", background: "#ffffff", padding: "4px 8px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
               <span style={{ fontSize: "11px", color: "#1e88e5", fontWeight: "bold", whiteSpace: "nowrap" }}>🔵2人目:</span>
-              <select value={class2P} onChange={(e) => setClass2P(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
+              <select value={class2P} onChange={(e) => { setClass2P(e.target.value); setSelectedNumber(0); }} style={{ flex: 1, padding: "2px", border: "none", fontSize: "12px", fontWeight: "bold", background: "none" }}>
                 {HANDICAP_CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <div style={{ display: "flex", gap: "4px", height: "35px" }}>
-              {btn(1)}
-              {btn(2)}
-              {btn(3)}
-              {btn(4)}
-              {btn(5)}
-            </div>
-            <div style={{ display: "flex", gap: "4px", height: "35px" }}>
-              {btn(6)}
-              {btn(7)}
-              {btn(8)}
-              {btn(9)}
-              {btn(10)}
-            </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+            {buttonNumbers.map(num => (
+              <button
+                key={num}
+                onClick={() => setSelectedNumber(num)}
+                style={{
+                  padding: "6px 12px", minWidth: "35px", flex: 1, borderRadius: "6px", fontSize: "14px",
+                  fontWeight: "bold", cursor: "pointer",
+                  border: selectedNumber === num ? "2px solid #aa3bff" : "1px solid #cbd5e1",
+                  background: selectedNumber === num ? "#aa3bff" : "white",
+                  color: selectedNumber === num ? "white" : "#0f172a"
+                }}
+              >
+                {num}
+              </button>
+            ))}
           </div>
         </div>
         <div style={{ flex: 1, display: "grid", gridTemplateRows: "1fr 1fr", gap: "6px", overflow: "hidden" }}>
@@ -212,7 +180,7 @@ export default function Competition({ onBack }: CompetitionProps) {
 
   // --- 🔴 クラス別大会（地区大会と同じ縦並びのリスト画面） ---
   if (subPage === "class") {
-    // クラス別専用のデータ（CLASS_TOURNAMENT_TRICKS）から技を取得
+    // 配列の個数が5個でも10個でも、自動でその数だけリストが生成されます
     const activeTricks = CLASS_TOURNAMENT_TRICKS[activeClass] || [];
 
     return (
@@ -223,8 +191,7 @@ export default function Competition({ onBack }: CompetitionProps) {
         <div style={{ background: "#f8fafc", padding: "8px", borderRadius: "8px", border: "1px solid #e2e8f0", marginBottom: "6px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "6px", background: "#ffffff", padding: "6px 10px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
             <span style={{ fontSize: "12px", color: "#ff4b4b", fontWeight: "bold", whiteSpace: "nowrap" }}>🔴 クラス選択:</span>
-            {/* 純粋なクラスだけのリスト（PURE_CLASS_LIST）を表示 */}
-            <select value={activeClass} onChange={(e) => setActiveClass(e.target.value)} style={{ flex: 1, padding: "2px", border: "none", fontSize: "13px", fontWeight: "bold", background: "none", color: "#0f172a", cursor: "pointer" }}>
+            <select value={activeClass} onChange={(e) => { setActiveClass(e.target.value); setSelectedNumber(0); }} style={{ flex: 1, padding: "2px", border: "none", fontSize: "13px", fontWeight: "bold", background: "none", color: "#0f172a", cursor: "pointer" }}>
               {PURE_CLASS_LIST.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
