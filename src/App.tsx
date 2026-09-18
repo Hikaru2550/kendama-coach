@@ -2,7 +2,8 @@ import { useState } from "react";
 import Competition from "./pages/Competition";
 import TimeAttack from "./pages/TimeAttack";
 import Moshikame from "./pages/Moshikame";
-import TimerPractice from "./pages/TimerPractice"; // 新しいタイマー画面の読み込み
+import TimerPractice from "./pages/TimerPractice"; 
+import Tricks from "./pages/Tricks"; // 💡新画面「技一覧」の読み込み
 import "./App.css";
 
 export default function App() {
@@ -23,27 +24,17 @@ export default function App() {
     return <Moshikame onBack={() => setPage("home")} />;
   }
 
-  // 4. 【新機能】制限時間練習画面（完全に独立したメニューとして配線）
+  // 4. 制限時間練習画面
   if (page === "timerPractice") {
     return <TimerPractice onBack={() => setPage("home")} />;
   }
 
-  // 5. 技一覧画面（今後のために準備）
+  // 5. 技一覧画面（新しく作成したTricksコンポーネントを呼び出すように変更）
   if (page === "tricks") {
-    return (
-      <div className="app">
-        <header className="header">
-          <button className="back-button" onClick={() => setPage("home")}>⬅ 戻る</button>
-          <h1>📚 技一覧</h1>
-        </header>
-        <main className="menu">
-          <p style={{ color: "#64748b", textAlign: "center", marginTop: "40px" }}>準備中...</p>
-        </main>
-      </div>
-    );
+    return <Tricks onBack={() => setPage("home")} />;
   }
 
-  // 🔴 メインメニュー（5つのボタンが縦に美しく並ぶ縦画面対応デザイン）
+  // 🔴 メインメニュー
   return (
     <div className="app">
       <header className="header">
@@ -72,14 +63,14 @@ export default function App() {
           <small>メトロノーム付きカウンター</small>
         </button>
 
-        {/* 4番目のボタン（技一覧をそのままキープ！） */}
+        {/* 4番目のボタン */}
         <button className="menu-button" onClick={() => setPage("tricks")}>
           <span>📚</span>
           <strong>技一覧</strong>
           <small>級・段位の技データを閲覧</small>
         </button>
 
-        {/* 🔥 5番目のボタン（新しく完全追加された制限時間メニュー） */}
+        {/* 5番目のボタン */}
         <button className="menu-button" onClick={() => setPage("timerPractice")}>
           <span>⏳</span>
           <strong>制限時間練習</strong>
